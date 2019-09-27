@@ -14,6 +14,8 @@ HardWare :
     
 Using CUDA 10.1 in spyder3
 
+CODE BY LEE YU RYEOL
+
 '''
 import os
 import numpy as np
@@ -94,7 +96,7 @@ model.add(layers.Conv2D(32,(3,3),strides=(1,1),
                         padding="SAME",activation="relu",
                         input_shape=(data_row,data_col,1),
                         kernel_initializer="glorot_normal",
-                        kernel_regularizer=regularizers.l1_l2(l1=1e-2,l2=1e-2)))
+                        kernel_regularizer=regularizers.l1_l2(l1=1e-1,l2=1e-2)))
 model.add(layers.Conv2D(32,(3,3),strides=(1,1),
                        padding="SAME", activation="relu",
                        kernel_initializer="glorot_normal"))
@@ -116,7 +118,7 @@ model.add(layers.Conv2D(128,(3,3),strides=(1,1),
 model.add(layers.Conv2D(128,(3,3),strides=(1,1),
                        padding="SAME", activation="relu",
                        kernel_initializer="glorot_normal"))
-#model.add(layers.MaxPooling2D((2,2),strides=(2,2)))
+model.add(layers.MaxPooling2D((2,2),strides=(2,2)))
 model.add(layers.Dropout(drop_rate))
 
 model.add(layers.Flatten())
