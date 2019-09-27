@@ -13,7 +13,15 @@ Using ReLU & Adam Optimizer
 Setting ROI and that images is interperted change to alphabet by Using CNN
 When "SpaceBar" button is pressed, that ROI is shoted
 
+Author LEE YU RYEOL
+
+2019_09_27 Including A B C D E F G
+
+Problem : "D" Has a problem
+ 
 """
+
+
 
 Cr_1=np.array([40,135,73])
 Cr_2=np.array([250,160,138])
@@ -32,15 +40,15 @@ Label=["A","B","C","D","E","F","G","H","I","J","K","NoThing"]
 
 cap=cv.VideoCapture(0)
 count =1
-test_result=[0,0,0,0,0]
+test_result=[0,0,0,0,0,0,0]
 while True:
     ref, origin_img=cap.read()
+    img=origin_img
     result=np.array([[0,0,0,0,0]],dtype=np.float32)
     #Rre-Processing Blur->Morphology_CLOSE ->Morphology_OPEN
     img=cv.GaussianBlur(origin_img,(3,3),0)
-    img=cv.morphologyEx(img,cv.MORPH_CLOSE,X_kernel,iterations=1)
+    img=cv.morphologyEx(img,cv.MORPH_CLOSE,X_kernel,iterations=2)
     img=cv.morphologyEx(img,cv.MORPH_OPEN, X_kernel,iterations=1)
-    #img=cv.morphologyEx(img,cv.MORPH_CLOSE,M_kernel,iterations=2)
     
     img=cv.flip(img,1)
 
@@ -61,18 +69,17 @@ while True:
         img_ycc=cv.cvtColor(test_img, cv.COLOR_BGR2YCrCb)
         mask_ycc=cv.inRange(img_ycc, Cr_1, Cr_2)
         ref, mask_ycc=cv.threshold(mask_ycc, 0, 255, cv.THRESH_BINARY+cv.THRESH_OTSU)
-        mask_ycc=cv.morphologyEx(mask_ycc,cv.MORPH_CLOSE,X_kernel,iterations=2)
+        mask_ycc=cv.morphologyEx(mask_ycc,cv.MORPH_CLOSE,X_kernel,iterations=3)
         test_img=cv.bitwise_and(test_img,test_img, mask=mask_ycc)
         test_img=cv.cvtColor(test_img, cv.COLOR_BGR2GRAY)#--->1Channel 200 x 200 x1
         test_img=cv.resize(test_img ,(200,200))
+        cv.imshow("ROI_threshold", test_img)
         test_img=np.array(test_img, dtype=np.float32)
         test_img /= 255
         tmp=test_img
         test_img=test_img.reshape((1,200,200,1))
         result=model.predict(test_img, verbose=0)
         index=np.argmax(result)
-        #print(result)
-        #print("Count : ",count, " ", Label[index])
         print(Label[index])
         count+=1
         test_result[index]+=1
@@ -89,5 +96,3 @@ while True:
          
 cv.destroyAllWindows()    
 cap.release()
-
-#print("Total is ",count, " ",test_result)
