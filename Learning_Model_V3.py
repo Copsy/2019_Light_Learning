@@ -25,8 +25,6 @@ from keras import layers
 from keras import models
 from keras import optimizers
 from keras import regularizers
-from keras.callbacks import TensorBoard
-from time import time
 import matplotlib.pylab as plt
 import cv2 as cv
 epoch=50
@@ -68,14 +66,6 @@ for i in range(0, ran):
     datacount+=count
     
 
-#Checking whether it is loaded normally
-'''
-for i in range(0, 29):
-    plt.imshow(x_data[i*500,:,:])
-    plt.title(reverselookup[y_data[i*3000,0]])
-    plt.show()
-'''
-
 x_data=np.array(x_data)
 y_data=np.array(y_data)
 y_data=y_data.reshape((datacount,1))
@@ -83,8 +73,7 @@ y_data=to_categorical(y_data,dtype="uint8")#Check OK
 x_data=x_data.reshape((datacount,data_row,data_col,1))
 
 x_train,x_further,y_train,y_further = train_test_split(x_data,y_data,test_size = 0.4)
-#split-> For testing split 0.2 : 20%
-#x_train : (16000, 120, 320, 1) / x_test : (2000,120,320, 1)
+
 x_validate,x_test,y_validate,y_test = train_test_split(x_further,y_further,test_size = 0.5)
 
 
@@ -156,17 +145,10 @@ model.add(layers.Dropout(drop_rate))
 adam=optimizers.Adam(lr=5e-5,epsilon=1e-8)
 rms_prop=optimizers.RMSprop(lr=1e-8, epsilon=1e-8)
 
-#tensorboard=TensorBoard(log_dir="./logs/{}".format(time()))
 
 model.compile(optimizer=adam,
               loss="categorical_hinge",
               metrics=["accuracy"])
-
-'''
-model.compile(optimizer=adam ,
-              loss="categorical_crossentropy",
-              metrics=["accuracy"])
-'''
 
 hist=model.fit(x_train,y_train,
           epochs=epoch,
