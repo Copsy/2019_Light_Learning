@@ -1,5 +1,6 @@
 # 2019_Light_Learning
 SoftWare Developement
+
 Data_change.py --> 찍은 사진의 배경을 추출하여 손만 남기도록 하는 시스템
 
 Learning_Model_V3.py --> Keras 이용한 학습 모델
