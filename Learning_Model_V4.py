@@ -13,13 +13,14 @@ from keras import optimizers
 from keras import regularizers
 import matplotlib.pylab as plt
 import h5py
+import numpy as np
 
 H5_PATH="./DATA_A_TO_G.hdf5"
 
 ran=7
 data_row=200; data_col=200;
 epoch=50
-batch_sizes=32
+batch_sizes=64
 drop_rate=0.2
 h5_f=h5py.File(H5_PATH,"r")
 tier_1=list(h5_f.keys())
@@ -27,13 +28,45 @@ train_img_num=h5_f[tier_1[2]].shape[0]
 
 x_train=HDF5Matrix(H5_PATH,str(tier_1[2]))
 y_train=HDF5Matrix(H5_PATH,str(tier_1[3]))
-
+# from val set, there is shuffled
 x_val=HDF5Matrix(H5_PATH,str(tier_1[4]))
 y_val=HDF5Matrix(H5_PATH,str(tier_1[5]))
 
 x_test=HDF5Matrix(H5_PATH,str(tier_1[0]))
 y_test=HDF5Matrix(H5_PATH,str(tier_1[1]))
+'''
+#Checking Data status
+print("training set")
+for i in range (0, ran):
+    img=x_train[i*4500]
+    img*=255
+    img=np.array(img, dtype=np.uint8)
+    img=img.reshape((200,200))
+    plt.imshow(img)
+    plt.title(y_train[i*4500])
+    plt.show()
 
+print("Val set")
+for i in range (0, ran):
+    img=x_val[i*1500]
+    img*=255
+    img=np.array(img, dtype=np.uint8)
+    img=img.reshape((200,200))
+    plt.imshow(img)
+    plt.title(y_val[i*1500])
+    plt.show()
+
+print("Test set")
+for i in range (0, ran):
+    img=x_test[i*1500]
+    img*=255
+    img=np.array(img, dtype=np.uint8)
+    img=img.reshape((200,200))
+    plt.imshow(img)
+    plt.title(y_test[i*1500])
+    plt.show()
+'''
+ 
 model=models.Sequential(name="Model")
 
 model.add(layers.Conv2D(32,(3,3),strides=(1,1),
@@ -72,7 +105,7 @@ model.add(layers.Dense(128, activation="relu",
                        kernel_initializer="glorot_normal"))
 model.add(layers.Dropout(drop_rate))
 
-model.add(layers.Dense(128, activation="relu",
+model.add(layers.Dense(64,activation="relu",
                        kernel_initializer="glorot_normal"))
 model.add(layers.Dropout(drop_rate))
 
@@ -87,10 +120,10 @@ model.add(layers.Dropout(drop_rate))
 
 model.add(layers.Dense(ran, activation='softmax',
                        kernel_initializer="glorot_normal",
-                       kernel_regularizer=regularizers.l1_l2(l1=1e-2,l2=1e-2)))
+                       kernel_regularizer=regularizers.l1_l2(l1=1e-1,l2=1e-2)))
 model.add(layers.Dropout(drop_rate))
 
-adam=optimizers.Adam(lr=5e-5,epsilon=1e-8)
+adam=optimizers.Adam(lr=1e-5,epsilon=1e-8)
 
 model.compile(optimizer=adam,
               loss="categorical_hinge",
