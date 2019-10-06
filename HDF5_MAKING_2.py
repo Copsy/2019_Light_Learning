@@ -49,28 +49,7 @@ each_image_number=len(temp)
 image_number=len(addr)
 x_train, x_further, y_train,y_further=train_test_split(addr,y_label,test_size=0.4)
 x_val, x_test, y_val, y_test=train_test_split(x_further,y_further, test_size=0.5)
-'''
-print("Training_SEt")
-for i in range (0 , 35):
-    img=cv.imread(x_train[i*900])
-    plt.imshow(img)
-    plt.title(y_train[i*900])
-    plt.show()
 
-print("Val set")
-for i in range (0 , 35):
-    img=cv.imread(x_val[i*300])
-    plt.imshow(img)
-    plt.title(y_val[i*300])
-    plt.show()
-    
-print("Test set")
-for i in range (0 , 35):
-    img=cv.imread(x_test[i*300])
-    plt.imshow(img)
-    plt.title(y_test[i*300])
-    plt.show()
-'''
 del(temp); del(label); del(ran); del(j); del(i);
 
 
