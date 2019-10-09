@@ -12,11 +12,11 @@ import cv2 as cv
 lookup = {} #---> " Label : Index
 reverselookup = {} #---> Index : Label
 count = 0
-S_PATH="d:/dataset_5/"
+S_PATH="d:/working_direc/"
 kernel=cv.getStructuringElement(cv.MORPH_RECT, (3,3))
 
-Cr_1=np.array([10,138,96])
-Cr_2=np.array([240,169,128])
+Cr_1=np.array([20,138,96])
+Cr_2=np.array([235,169,128])
 
 data_row=200
 data_col=200
