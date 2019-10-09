@@ -11,7 +11,6 @@ import os
 import cv2 as cv
 import glob
 from sklearn.model_selection import train_test_split
-import matplotlib.pylab as plt
 
 F_PATH="d:/dataset_5/"
 lookup={}
@@ -56,18 +55,18 @@ del(temp); del(label); del(ran); del(j); del(i);
 #y_label size (7,)
 '''
 
-x_train 31500 path
-x_val   10500 path
-x_test  10500 path
+x_train 45000 path
+x_val   15000 path
+x_test  15000 path
 
-y_train 31500, 7
-y_val   10500, 7
-y_test  10500, 7
+y_train 45000, 7
+y_val   15000, 7
+y_test  15000, 7
 
 '''
     
 
-f=h5py.File("./DATA_A_TO_G.hdf5", "w")
+f=h5py.File("./DATA_A_TO_J.hdf5", "w")
 
 f.create_dataset("train_data",
                  shape=((int)(each_image_number*count*rate_for_train),width,height,1),
@@ -103,11 +102,6 @@ for i in range(len(x_train)):
     arr/=255
     f["train_data"][i]=arr
     f["train_label"][i]=y_train[i]
-    cv.imshow("Figure_1",img)
-    keys=cv.waitKey(10)
-    if keys==27:
-        break;
-cv.destroyAllWindows()
 
 print("VAL_DATA_INPUT")
 for i in range(len(x_val)):
@@ -118,11 +112,7 @@ for i in range(len(x_val)):
     arr/=255
     f["val_data"][i]=arr
     f["val_label"][i]=y_val[i]
-    cv.imshow("Figure_1",img)
-    keys=cv.waitKey(10)
-    if keys==27:
-        break;
-cv.destroyAllWindows()
+
 print("TEST_DATA_INPUT")
 for i in range(len(x_test)):
     img=cv.imread(x_test[i])
@@ -132,13 +122,6 @@ for i in range(len(x_test)):
     arr/=255
     f["test_data"][i]=arr
     f["test_label"][i]=y_test[i]
-    cv.imshow("Figure_1",img)
-    keys=cv.waitKey(10)
-    if keys==27:
-        break;
-cv.destroyAllWindows()
-
-
 
 tier_1=list(f.keys())
 
