@@ -18,16 +18,16 @@ import h5py
 H5_PATH="./DATA_A_TO_J.hdf5"
 
 data_row=200; data_col=200;
-epoch=5
+epoch=int(input("Enter the Epoch interation : "))
 batch_sizes=64
-drop_rate=0.2
+
 h5_f=h5py.File(H5_PATH,"r")
 tier_1=list(h5_f.keys())
 train_img_num=h5_f[tier_1[2]].shape[0]
 
 x_train=HDF5Matrix(H5_PATH,str(tier_1[2]))
 y_train=HDF5Matrix(H5_PATH,str(tier_1[3]))
-# from val set, there is shuffled
+
 x_val=HDF5Matrix(H5_PATH,str(tier_1[4]))
 y_val=HDF5Matrix(H5_PATH,str(tier_1[5]))
 
