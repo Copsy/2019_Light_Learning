@@ -15,32 +15,40 @@ When "SpaceBar" button is pressed, that ROI is shoted
 
 Author LEE YU RYEOL
 
-2019_09_27 Including A B C D E F G
-
-Problem : "D" Has a problem
- 
 """
 
 
 
-Cr_1=np.array([40,135,73])
-Cr_2=np.array([250,160,138])
+Cr_1=np.array([20,135,73])
+Cr_2=np.array([250,170,138])
 
 
-H5_path="./Learning_Model_V3.h5"
+H5_path="./Learning_Model_V4.h5"
 
 M_kernel=cv.getStructuringElement(cv.MORPH_RECT, (3,3))
 X_kernel=np.array([[1,3,1],[3,3,3],[1,3,1]])
 kernel=cv.getStructuringElement(cv.MORPH_RECT, (5,5))
-x_1,y_1,x_2,y_2=70,70,270,270
+x_1,y_1,x_2,y_2=140,140,400,400
 target_string=""
 
 model=load_model(H5_path)
-Label=["A","B","C","D","E","F","G","H","I","J","K","NoThing"]
+Label=[]
+
+test=np.zeros((200,200,1), dtype=np.float32)
+
+test=test.reshape((1,200,200,1))
+
+indexx=model.predict(test,verbose=0)
+
+for i in range(len(indexx[0])):
+    Label.append(chr(65+i))
+    
+del(test); del(indexx);
 
 cap=cv.VideoCapture(0)
 count =1
 test_result=[0,0,0,0,0,0,0]
+
 while True:
     ref, origin_img=cap.read()
     img=origin_img
@@ -93,6 +101,6 @@ while True:
     elif key==ord('r'):
         target_string=""
         print("Reset")
-         
+
 cv.destroyAllWindows()    
 cap.release()
