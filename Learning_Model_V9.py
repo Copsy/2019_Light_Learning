@@ -9,7 +9,7 @@ from . import LineModule
 
 H5_PATH="./DATA_A_TO_S.hdf5"
 
-epoch=1
+epoch=20
 batch_sizes=64
 drop_rate=0.4
 h5_f=h5py.File(H5_PATH,"r")
@@ -25,8 +25,6 @@ x_test=HDF5Matrix(H5_PATH,str(tier_1[0]))
 y_test=HDF5Matrix(H5_PATH,str(tier_1[1]))
 
 ran=y_train.shape[1] 
-
-
 
 newmodel = LineModule(drop_rate)
 line_1 = newmodel.execute()
@@ -44,8 +42,6 @@ output_shape=layers.Dense(ran,activation="softmax",
 
 model=models.Model(inputs=input_shape,outputs=output_shape)
 
-
-
 adam=optimizers.Adam(lr=1e-5)
 
 model.compile(optimizer=adam,
@@ -58,9 +54,6 @@ hist=model.fit(x_train, y_train, batch_size=batch_sizes,
             epochs=epoch, verbose=1, shuffle="batch",
             validation_data=(x_val, y_val)) 
 
-
-
-
 [loss,accuracy]=model.evaluate(x_test,y_test,verbose=1)
 print("ACC : "+str(accuracy))
 
@@ -68,9 +61,6 @@ model.save("./Learning_Model_V9.h5",overwrite=True)
 model.summary()
 
 h5_f.close()
-
-
-
 
 fig, loss_ax = plt.subplots()
 
