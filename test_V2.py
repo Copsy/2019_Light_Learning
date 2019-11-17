@@ -17,8 +17,6 @@ Author LEE YU RYEOL
 
 """
 
-
-
 Cr_1=np.array([20,135,73])
 Cr_2=np.array([255,190,158])
 
@@ -46,7 +44,6 @@ for i in range(len(indexx[0])):
 del(test); del(indexx);
 
 cap=cv.VideoCapture(0)
-count=0
 
 while True:
     ref, origin_img=cap.read()
@@ -69,7 +66,6 @@ while True:
     if key==27:#ESC
         break;
     elif key==32: #SpaceBar
-        count+=1
         test_img=ROI.copy()#Deep_Copy
         img_ycc=cv.cvtColor(test_img, cv.COLOR_BGR2YCrCb)
         mask_ycc=cv.inRange(img_ycc, Cr_1, Cr_2)
@@ -85,7 +81,6 @@ while True:
         result=model.predict(test_img, verbose=0)
         index=np.argmax(result)
         print(Label[index])
-        print("Count : " + str(count))
         target_string+=Label[index]
     elif key==ord('a'):
         print("String is : ",target_string)
@@ -96,7 +91,6 @@ while True:
         print("Delete")
     elif key==ord('r'):
         target_string=""
-        count=0
         print("Reset")
 
 cv.destroyAllWindows()    
