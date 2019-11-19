@@ -13,11 +13,9 @@ import glob
 from sklearn.model_selection import train_test_split
 
 F_PATH="d:/dataset_5/"
-lookup={}
 reverse_lookup={}
 count=0
 ran=0
-image_number=0
 width=200
 height=200
 
@@ -29,7 +27,6 @@ label=[]
 addr=[]
 
 for j in os.listdir(F_PATH):
-    lookup[j]=count
     reverse_lookup[count]=j
     count+=1
 
@@ -45,28 +42,13 @@ for i in range(len(addr)):#Making one hot
     y_label[i][label[i]]=1
         
 each_image_number=len(temp)
-image_number=len(addr)
-x_train, x_further, y_train,y_further=train_test_split(addr,y_label,test_size=0.4)
+x_train, x_further, y_train,y_further=train_test_split(addr,y_label,
+                                                       test_size=(1-rate_for_train))
 x_val, x_test, y_val, y_test=train_test_split(x_further,y_further, test_size=0.5)
 
-del(temp); del(label); del(ran); del(j); del(i);
+del(temp); del(label); del(ran); del(j); del(i); del(reverse_lookup);
 
-
-#y_label size (7,)
-'''
-
-x_train 45000 path
-x_val   15000 path
-x_test  15000 path
-
-y_train 45000, 7
-y_val   15000, 7
-y_test  15000, 7
-
-'''
-    
-
-f=h5py.File("./DATA_A_TO_J.hdf5", "w")
+f=h5py.File("d:/aaa/DATA_A_TO_Z.hdf5", "w")
 
 f.create_dataset("train_data",
                  shape=((int)(each_image_number*count*rate_for_train),width,height,1),
@@ -102,6 +84,7 @@ for i in range(len(x_train)):
     arr/=255
     f["train_data"][i]=arr
     f["train_label"][i]=y_train[i]
+    print("Train_Input : "+str(i))
 
 print("VAL_DATA_INPUT")
 for i in range(len(x_val)):
@@ -112,6 +95,7 @@ for i in range(len(x_val)):
     arr/=255
     f["val_data"][i]=arr
     f["val_label"][i]=y_val[i]
+    print("Valid_Input : "+str(i))
 
 print("TEST_DATA_INPUT")
 for i in range(len(x_test)):
@@ -122,7 +106,8 @@ for i in range(len(x_test)):
     arr/=255
     f["test_data"][i]=arr
     f["test_label"][i]=y_test[i]
-
+    print("Test_Input : "+str(i))
+    
 tier_1=list(f.keys())
 
 f.close()

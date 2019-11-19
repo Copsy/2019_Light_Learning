@@ -9,12 +9,12 @@ from . import LineModule
 
 H5_PATH="./DATA_A_TO_S.hdf5"
 
-'''
-
-파라미터 불러오기
 
 
-'''
+#파라미터 불러오기
+
+
+
 epoch=20
 batch_sizes=64
 drop_rate=0.4
