@@ -41,8 +41,8 @@ for i in range(0, count):
         img_ycc=cv.cvtColor(origin_img,cv.COLOR_BGR2YCrCb)
         mask_ycc=cv.inRange(img_ycc, Cr_1,Cr_2)
         ref, mask_ycc=cv.threshold(mask_ycc, 0, 255, cv.THRESH_BINARY+cv.THRESH_OTSU)
-        mask_ycc=cv.morphologyEx(mask_ycc,cv.MORPH_CLOSE,kernel,iterations=3)
-        mask_ycc=cv.morphologyEx(mask_ycc,cv.MORPH_OPEN,kernel,iterations=2)
+        mask_ycc=cv.morphologyEx(mask_ycc,cv.MORPH_CLOSE,kernel,iterations=close_iteration)
+        mask_ycc=cv.morphologyEx(mask_ycc,cv.MORPH_OPEN,kernel,iterations=open_iteration)
         img=cv.bitwise_and(origin_img,origin_img, mask=mask_ycc)
         
         cv.imwrite(S_PATH+str(reverselookup[i])+"/"+str(j),img)
