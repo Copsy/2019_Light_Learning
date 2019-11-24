@@ -4,12 +4,18 @@ Created on Thu Nov 21 22:50:56 2019
 
 @author: Alero
 """
-
 import numpy as np
 from keras.models import load_model
 import cv2 as cv
 from Background_Abstract import abstract
 from size_change import sizing
+import tensorflow as tf
+from keras.backend.tensorflow_backend import set_session
+
+config=tf.ConfigProto()
+config.gpu_options.per_process_gpu_memory_fraction=0.5
+#config.gpu_options.allow_growth=True
+set_session(tf.Session(config=config))
 
 X_kernel=np.array([[1,1,1],[1,1,1],[1,1,1]])
 H5_path="./Learning_Model_V9_1.h5"
