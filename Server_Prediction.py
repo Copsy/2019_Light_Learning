@@ -11,7 +11,6 @@ from Background_Abstract import abstract
 from size_change import sizing
 import socket
 
-#socket 수신 버퍼를 읽어서 반환하는 함수
 def recvall(sock, count):
     buf = b''
     while count:
@@ -20,7 +19,9 @@ def recvall(sock, count):
         buf += newbuf
         count -= len(newbuf)
     return buf
-
+'''
+Need to change TCP_IP
+'''
 TCP_IP = '192.168.0.2'
 TCP_PORT = 5678
 
@@ -33,8 +34,6 @@ count=0
 for i in range(26):
     Label.append(chr(65+i))
 
-
-#TCP소켓 열고 수신 대기
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 print("OPEN")
 s.bind((TCP_IP, TCP_PORT))
@@ -45,25 +44,25 @@ print("Listen")
 while True:    
     conn, addr = s.accept()
     print("Accept")
-    while True:
-        length = recvall(conn,16) #Call function
-        stringData = recvall(conn, int(length))
-        #stringData = recvall(conn, int(length))
-        data=np.frombuffer(stringData,dtype="uint8")
-        
-        decimg=cv.imdecode(data,1)
-        img=cv.GaussianBlur(decimg,(3,3),0)
-        img=cv.morphologyEx(img,cv.MORPH_CLOSE,X_kernel,iterations=1)
-        img=cv.morphologyEx(img,cv.MORPH_OPEN, X_kernel,iterations=1)
-        img=cv.flip(img,1)
-        test_img=abstract(img)
-        test_img=sizing(test_img)
-        result=model.predict(test_img, verbose=0)
-        index=np.argmax(result)
-        
-        print(Label[index])
-        
-        cv.imshow("SERVER", decimg)
+    while True:         
+        try:
+            length=recvall(conn,16)
+            stringData=recvall(conn,int(length))
+            data=np.frombuffer(stringData,dtype="uint8")
+            decimg=cv.imdecode(data,1)    
+            img=cv.GaussianBlur(decimg,(3,3),0)
+            img=cv.morphologyEx(img,cv.MORPH_CLOSE,X_kernel,iterations=1)
+            img=cv.morphologyEx(img,cv.MORPH_OPEN, X_kernel,iterations=1)
+            img=cv.flip(img,1)
+            test_img=abstract(img)
+            test_img=sizing(test_img)
+            result=model.predict(test_img, verbose=0)
+            index=np.argmax(result)
+            conn.sendall(Label[index].encode())
+            print(Label[index])
+            cv.imshow("SERVER", decimg)
+        except Exception as e:
+            _=0;
         key=cv.waitKey(1000)
         cv.destroyWindow("SERVER")
         if key==27:
