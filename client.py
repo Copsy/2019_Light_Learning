@@ -6,7 +6,7 @@ from camera_pipeline import pipeline
 TCP_IP="192.168.0.2"
 TCP_PORT=5678
 x_1,y_1,x_2,y_2=100,100,300,300
-
+SIZE=8
 client_sock=socket.socket()
 client_sock.connect((TCP_IP,TCP_PORT))
 
@@ -25,11 +25,19 @@ while True:
         result, encode=cv.imencode(".jpg", ROI, encode_param)
         data=np.array(encode)
         strData=data.tostring()
+        #Send Image
         client_sock.send(str(len(strData)).ljust(16).encode())
         client_sock.send(strData)
+        # Waiting for Result
+        try:
+            msg=client_sock.recv(SIZE)
+        except Exception as e:
+            _=0;
+        print("Result is "+msg.decode())
     elif key==27:
         break;
-    
+
+client_send("-1".encode())
 client_sock.close()
 cap.release()
 cv.destroyAllWindows()
