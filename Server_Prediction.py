@@ -56,7 +56,7 @@ while True:
     conn, addr = s.accept()
     print("Accept")
     conn.sendall((str(os.getpid())).encode())
-    while True:         
+    while True:
         try:
             length, ref=recvall(conn,16)
             
@@ -64,16 +64,16 @@ while True:
                 print("Close connection with client")
                 break;
                 
-            stringData=recvall(conn,int(length))
-            data=np.frombuffer(stringData,dtype="uint8")
-            decimg=cv.imdecode(data,1)    
+            stringData, ref=recvall(conn,int(length))
+            data=np.fromstring(stringData,dtype="uint8")
+            decimg=cv.imdecode(data,1)
             
             img=cv.GaussianBlur(decimg,(3,3),0)
             img=cv.morphologyEx(img,cv.MORPH_CLOSE,X_kernel,iterations=1)
             img=cv.morphologyEx(img,cv.MORPH_OPEN, X_kernel,iterations=1)
             img=cv.flip(img,1)
             
-            test_img=abstract(img)
+            test_img=abstract(img,1,4,2)
             test_img=sizing(test_img)
             
             result=model.predict(test_img, verbose=0)

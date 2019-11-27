@@ -8,10 +8,11 @@ Created on Wed Nov 27 02:12:05 2019
 import socket
 import cv2 as cv
 import numpy as np
+from camera_pipeline import pipeline
 
 TCP_IP="192.168.0.2"
 TCP_PORT=5678
-x_1,y_1,x_2,y_2=100,100,300,300
+x_1,y_1,x_2,y_2=100,100,340,340
 SIZE=8
 client_sock=socket.socket()
 client_sock.connect((TCP_IP,TCP_PORT))
@@ -23,7 +24,7 @@ cap=cv.VideoCapture(0)
 end_msg=str(-1)
 
 while True:
-    ref,frame=cap.read()
+    ref,frame=cap.read(pipeline(framerate=60), cv.CAP_GSTREAMER)
     
     cv.rectangle(frame,(x_1-5,y_1-5),(x_2+5,y_2+5),(255,255,255),3)
     
