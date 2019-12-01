@@ -61,7 +61,6 @@ while True:
     ref=True;    
     conn, addr = s.accept()
     print("Accept")
-    conn.sendall((str(os.getpid())).encode())
     while True:
         try:
             #이미지 올떄까지 기다림

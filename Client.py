@@ -16,10 +16,7 @@ x_1,y_1,x_2,y_2=100,100,340,340
 SIZE=8
 client_sock=socket.socket()
 client_sock.connect((TCP_IP,TCP_PORT))
-server_pid=client_sock.recv(SIZE).decode()
-print("Server PID is "+server_pid)
-
-cap=cv.VideoCapture(pipeline(framerate=60), cv.CAP_GSTREAMER)
+cap=cv.VideoCapture(0)
 
 end_msg=str(-1)
 
