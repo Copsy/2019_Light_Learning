@@ -55,7 +55,6 @@ while True:
     ref=True;    
     conn, addr = s.accept()
     print("Accept")
-    conn.sendall((str(os.getpid())).encode())
     while True:
         try:
             length, ref=recvall(conn,16)
