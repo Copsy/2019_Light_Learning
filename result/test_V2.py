@@ -33,7 +33,7 @@ config.gpu_options.per_process_gpu_memory_fraction=0.5
 set_session(tf.Session(config=config))
 
 X_kernel=np.array([[1,1,1],[1,1,1],[1,1,1]])
-H5_path="./Learning_Model_V9_2.h5"
+H5_path="./Learning_Model_V9.h5"
 M_kernel=cv.getStructuringElement(cv.MORPH_RECT, (3,3))
 x_1,y_1,x_2,y_2=40,140,300,365
 target_string=""
